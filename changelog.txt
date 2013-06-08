@@ -1,0 +1,21 @@
+Feb 24 2012		Oliver Friedmann
+ - Added CTL+ procedure
+ - Various minor improvements
+ - Various minor fixes
+
+
+Jun 14 2010		Oliver Friedmann
+ - Removed automatic sorting of formula (see branching-width optimization)
+ - Added parameters: -opt prefersmall and -opt preferlarge for sorting formulas
+
+
+Apr 12 2010		Oliver Friedmann
+ - Branching-width of CTL* and CTL games now linearly bounded in the size of the formula
+
+
+Jan 17 2010		Oliver Friedmann
+ - Added Model Checker for CTL
+ - Added Validity Checker for CTL
+ - Added Dining Philosophers Benchmark
+ - Several Bugs Fixed
+ - Enabled Local Solving Capabilities

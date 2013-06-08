@@ -1,0 +1,7 @@
+MLSolver TODO:
+- Real literal propagation requires serious changes (dynamic formulas, dynamic ordering, automatic updating of automata sets etc.)
+- Transforming formulas poses difficulties for automata and associated determinization procedures (needs to know size).
+- Modularity of determinisation procedures
+- Optimization on / off
+- Serious option module
+- Uniform syntax of formulas?

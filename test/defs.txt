@@ -1,0 +1,418 @@
+/* *******************************************************
+  #include($n) (valid)
+******************************************************** */
+
+#includehelper($n) :=
+	\ $n > 0 -> q & <a>(q & (<a>(#includehelper($n - 1))))
+	\ $n = 0 -> (!q) & (<a>X);
+
+#include($n) := (nu X.(#includehelper($n))) ==> nu Z.mu Y.(((!q) & <a>Z) | (q & <a> (q & <a> Y)));
+
+
+/* *******************************************************
+  #nester($n) (valid)
+******************************************************** */
+
+#nesterpostfix($n, $i) :=
+	\ $n = $i -> q_$i | (<a>(X_$i))
+	\ tt -> q_$i | (<a>(X_$i & #nesterpostfix($n, $i + 1)));
+
+
+#nesterhelper($n, $i) :=
+	\ $n < $i -> #nesterpostfix($n, 1)
+	\ $i % 2 = 0 -> nu X_$i.#nesterhelper($n, $i + 1)
+	\ $i % 2 = 1 -> mu X_$i.#nesterhelper($n, $i + 1);
+
+#nester($n) := #nesterhelper($n, 1) | !#nesterhelper($n, 1);
+
+
+/* *******************************************************
+   PDL Star-nesting (valid)
+******************************************************* */
+
+#starnesterprogram($i) := 
+        \ $i = 0 -> tt?^*
+        \ $i > 0 -> ((a^*) . #starnesterprogram($i-1) . (b^*))^*;
+
+#starnester1($n) := (< #starnesterprogram($n) >q) | [ #starnesterprogram($n) ]!q ;
+        
+#starnester2($n) := (< #starnesterprogram($n) >q) | [ (a | b)^* ]!q ;
+
+#starnester3($n) := (< (a | b)^* >q) | [ #starnesterprogram($n) ]!q ;
+
+
+
+/* *******************************************************
+  #petri($n) (valid)
+******************************************************** */
+
+#petriwellhelper($i, $n) :=
+	\ $i > $n -> ff
+	\ tt -> (<t_$i>(p_$i & <s_$i>X)) | #petriwellhelper($i + 1, $n);
+
+#petriwell($n) := nu X.(p & #petriwellhelper(1, $n));
+
+#petrifairhelper($j, $i, $n) :=
+	\ $j > $n -> ff
+	\ $j = $i -> #petrifairhelper($j + 1, $i, $n)
+	\ tt -> ((<t_$j>Y_$i) | (<s_$j>Y_$i)) | #petrifairhelper($j + 1, $i, $n);
+
+#petrifair($i, $n) :=
+	\ $i > $n -> tt
+	\ tt -> nu X_$i. mu Y_$i.((<t_$i>X_$i) | (<s_$i>Y_$i) | #petrifairhelper(1, $i, $n));
+
+#petrihelperpj($j, $i, $n) :=
+	\ $j > $n -> ff
+	\ $j = $i -> #petrihelperpj($j + 1, $i, $n)
+	\ tt -> p_$j | #petrihelperpj($j + 1, $i, $n);
+
+#petriexclhelper($i, $n) :=
+	\ $i > $n -> ff
+	\ tt -> ((<t_$i>(X & p_$i & !p & !#petrihelperpj(1, $i, $n))) | (<s_$i>(X & p & !#petrihelperpj(1, 0, $n)))) | #petriexclhelper($i + 1, $n);
+
+#petriexcl($n) := nu X.#petriexclhelper(1, $n);
+
+#petrinet($n) := #petriwell($n) & #petrifair(1, $n) & #petriexcl($n);
+
+#petrimodelhelper($i, $n) :=
+	\ $i > $n -> X
+	\ tt -> (p & !#petrihelperpj(1, 0, $n)) & <t_$i>((p_$i & !p & !#petrihelperpj(1, $i, $n)) & <s_$i>#petrimodelhelper($i + 1, $n));
+
+#petrimodel($n) := nu X.#petrimodelhelper(1, $n);
+
+#petri($n) := #petrimodel($n) ==> #petrinet($n);
+
+
+
+/* *******************************************************
+  parity condition in the linear time case boils down to 
+  Büchi (valid)
+******************************************************* */
+
+#nottheothers($i,$j) :=
+        \ $j = 0  -> tt
+        \ $j = $i -> #nottheothers($i,$j-1)
+        \ tt      -> !q_$j & #nottheothers($i,$j-1);
+
+#justoneq($i,$n) := 
+	\ $i = 0 -> ff
+	\ tt     -> q_$i & #nottheothers($i,$n) | #justoneq($i-1,$n);
+
+#alwaysjustoneq($n) := nu X. #justoneq($n,$n) & ()X;
+
+#infinitelyoftenq($i) := nu X.(mu Y.q_$i | ()Y) & ()X;
+#finitelyoftenq($i) := !(#infinitelyoftenq($i));
+
+#forallgreateroddfinitelyoften($n,$i) :=
+        \ $i > $n    -> tt
+        \ $i % 2 = 1 -> #finitelyoftenq($i) & #forallgreateroddfinitelyoften($n,$i+2)
+        \ tt         -> #forallgreateroddfinitelyoften($n,$i+1);
+
+#existseveninfpriority($n,$i) :=
+        \ $i = 0     -> ff
+        \ $i % 2 = 0 -> (#infinitelyoftenq($i) & #forallgreateroddfinitelyoften($n,$i+1)) | 
+                          #existseveninfpriority($n,$i-2)
+        \ $i % 2 = 1 -> #existseveninfpriority($n,$i-1);
+
+#parityconditionbottom($i) :=
+        \ $i = 0     -> ff
+        \ tt         -> (q_$i & ()X_$i) | #parityconditionbottom($i-1);
+
+#paritycondition($n,$i) :=
+        \ $i = 0     -> #parityconditionbottom($n)
+	\ $i % 2 = 0 -> nu X_$i.#paritycondition($n, $i - 1)
+	\ $i % 2 = 1 -> mu X_$i.#paritycondition($n, $i - 1);
+
+#parityandbuechi($n) := 
+  #alwaysjustoneq($n) ==> (#paritycondition($n,$n) <==> #existseveninfpriority($n,$n));
+
+
+/* ********************************************************
+  Limit Closure (valid)
+******************************************************** */
+
+#mucalclimitclosure($n,#phi) := (nu X_$n . (#phi ==> <> #phi) & []X_$n) ==> (#phi ==> (nu Y_$n. #phi & <>Y_$n));
+
+#ctllimitclosure(#phi) := (A G (#phi ==> E X #phi)) ==> (#phi ==> E G #phi);
+
+#ctlstarlimitclosure(#phi,#psi) := A G( E #psi ==> E X E(#phi U #psi )) & E #psi ==> E G(E #phi U E #psi);
+
+#ctlstarsimplelimitclosure(#phi) := #ctlstarlimitclosure(tt,#phi);
+
+#demrikillerformula($n) := 
+  \ $n = 0 -> p
+/*  \ tt     -> #ctllimitclosure(#demrikillerformula($n - 1)); */
+  \ tt     -> #mucalclimitclosure($n, #demrikillerformula($n - 1));
+
+
+
+/* *******************************************************
+   fair Scheduler (valid)
+******************************************************* */
+
+#alwayseventuallynextevent($i,$n) := A G(q_$i ==> E X F q_(($i+1) % $n));
+
+#alwayseventuallynextevents($i,$n) := 
+  \ $i = 0 -> #alwayseventuallynextevent(0,$n)
+  \ tt     -> #alwayseventuallynextevent($i,$n) & #alwayseventuallynextevents($i-1,$n);
+
+#infinitelyoftenevents($i) :=
+  \ $i = 0 -> G F q_0
+  \ tt     -> (G F q_$i) & #infinitelyoftenevents($i-1);
+
+#fairscheduler($n) := q_0 & #alwayseventuallynextevents($n-1,$n) ==> E #infinitelyoftenevents($n-1);
+
+
+/* *******************************************************
+   binary Counter (satisfiable)
+******************************************************* */
+
+#bincounterauxcon($n) :=
+  \ $n = 0 -> !c_0
+  \ tt     -> #bincounterauxcon($n - 1) & !c_$n;
+
+#ltmcbincounteraux($n) :=
+  \ $n = 0 -> c_0 <==> ()!c_0
+  \ tt     -> (()c_$n <==> ((c_$n & !c_($n-1) & ()c_($n-1)) | (!c_$n & c_($n-1) & ()!c_($n-1)))) 
+              & #ltmcbincounteraux($n-1);
+
+#ltmcbincounter($n) := (nu X.#ltmcbincounteraux($n-1) & ()X) & #bincounterauxcon($n-1);
+
+#ctlstarbincounteraux($n) :=
+  \ $n = 0 -> c_0 <==> X !c_0
+  \ tt     -> (X c_$n <==> ((c_$n & !c_($n-1) & X c_($n-1)) | (!c_$n & c_($n-1) & X !c_($n-1)))) 
+              & #ctlstarbincounteraux($n-1);
+
+#ctlstarbincounter($n) := E ((G(#ctlstarbincounteraux($n-1))) & #bincounterauxcon($n-1));
+
+#pdlbincounteraux($n) :=
+  \ $n = 0 -> (c_0 ==> [a]!c_0) & (!c_0 ==> [a]c_0)
+  \ tt     -> ((!c_($n-1) | <a>c_($n-1)) ==> ((c_$n ==> [a]c_$n) & (!c_$n ==> [a]!c_$n))) &
+              ((c_($n-1) & <a>!c_($n-1)) ==> ((c_$n ==> [a]!c_$n) & (!c_$n ==> [a]c_$n))) &
+              #pdlbincounteraux($n-1);
+
+#pdlbincounter($n) := ([a^*](<a>tt & #pdlbincounteraux($n-1)))& #bincounterauxcon($n-1);
+
+
+/* *******************************************************
+  -- Tests --
+******************************************************** */
+
+#phi($i) := \ $i > 0 -> <a>p_$i | [a]!#phi($i - 1)
+            \ $i = 0 -> tt;
+
+#tnd(#f) := #f | !#f;
+
+#mp(#a, #b) := ((#a ==> #b) & #a) ==> #b;
+
+
+#lim(#phi) := (A G (#phi ==> E X #phi)) ==> (#phi ==> E G #phi);
+
+#limconv(#phi) := (#phi ==> E G #phi) ==> (A G (#phi ==> E X #phi));
+
+#ctlstarlimittestx(#phi) := (E G F #phi) ==> (E G E F #phi);
+
+#ctlstarlimittesty(#phi) := (A F G #phi) ==> (A F A G #phi);
+
+#quantorexchangex(#phi) := (mu X.nu Y.#phi) ==> nu Y.mu X.#phi;
+
+#quantorexchangey(#phi) := (nu X.mu Y.#phi) ==> mu Y.nu X.#phi;
+
+#infinitelyoften(#phi) := (nu X.(mu Y.((#phi | <>Y)) & <>X))  <==>  nu X.mu Y.((#phi & <>X) | <>Y);
+
+#limcltstx($i) :=
+	\ $i = 0 -> q_$i
+	\ $i % 2 = 1 -> q_$i & X #limcltstx($i - 1)
+	\ $i % 2 = 0 -> q_$i | X #limcltstx($i - 1);
+	
+#limcltstyhlp($i) :=
+	\ $i = 0 -> q_$i
+	\ tt -> #limcltstyhlp($i-1) & q_$i;
+	
+#limcltsty($i) := G ~ #limcltstyhlp($i);
+
+
+
+#releasesub(#left,#right,#sub) := (#left | #sub) R (#right | #sub);
+
+#releasesubexp(#left,#right,#sub) := #right & (#left | X (#releasesub(#left,#right,#sub)));
+
+#testrule(#left,#right,#inner,#outer) := (A G ( #outer | E (#releasesubexp(#left,#right,(#inner | #outer)) & #inner))) ==> A G (#outer | E((#left R #right) & #inner));
+
+
+
+#diningaxiomshelper($i,$n) :=
+	\ $i < $n -> ((l_$i ==> !(r_(($i+$n-1)%$n) | <>r_(($i+$n-1)%$n))) & (r_$i ==> !(l_(($i+1)%$n) | <>l_(($i+1)%$n))) & (l_$i & !r_$i ==> <>l_$i) & (r_$i & !l_$i ==> <>r_$i)) & #diningaxiomshelper($i+1,$n)
+	\ tt -> tt;
+	
+#diningaxioms($n) := nu X.(#diningaxiomshelper(0,$n) & <>X);
+
+#diningfairnesshelper($i,$n) :=
+	\ $i < $n -> (nu Y_$i.mu Z_$i.(((l_$i & r_$i) | <>Z_$i) & <>Y_$i)) & #diningfairnesshelper($i+1,$n)
+	\ tt -> tt;
+
+#diningfairness($n) := #diningfairnesshelper(0,$n);
+
+#diningphilos($n) := #diningaxioms($n) & #diningfairness($n);
+
+#dininglockhelper($i,$n) :=
+	\ $i < $n -> l_$i & #dininglockhelper($i+1,$n)
+	\ tt -> tt;
+
+#dininglock($n) := mu Y.(#dininglockhelper(0,$n) | <>Y);
+
+#multiplenext($n,#phi) :=
+	\ $n > 0 -> #multiplenext($n - 1, X #phi)
+	\ tt -> X #phi;
+	
+#countertest($n) := (A G (e ==> A G (e & !b))) & (A G (X ! e ==> ((E X b) & (E X ! b)))) & A #multiplenext($n-1,(!e & X e));
+
+#afaqhelp1($n) :=
+	\ $n > 0 -> A F G #afaqhelp1($n-1)
+	\ tt -> q;
+	
+#afaqhelp2($n) :=
+	\ $n > 0 -> A F A G #afaqhelp2($n-1)
+	\ tt -> q;
+
+#afaq($n) := #afaqhelp1($n) ==> #afaqhelp2($n);
+
+#egeqhelp1($n) :=
+	\ $n > 0 -> E G F #egeqhelp1($n-1)
+	\ tt -> q;
+	
+#egeqhelp2($n) :=
+	\ $n > 0 -> E G E F #egeqhelp2($n-1)
+	\ tt -> q;
+
+#egeq($n) := #egeqhelp1($n) ==> #egeqhelp2($n);
+
+
+
+/* ***************************************************
+** satisfiable in huge models only (CTL*)
+*************************************************** */
+
+#allbitsnochange($n) :=  
+       \ $n = 0 -> c_0 <==> X c_0
+       \ tt     -> (c_($n) <==> X c_($n)) & #allbitsnochange($n-1) ;
+
+
+#hugemodelsskeleton($n) := z & A G ((z ==> E X z & E X !z) & (!z ==> A X !z)) &
+       A G A ((X !z) ==> ((e <==> X e) & (f <==> X f) & (c <==> X c) & #allbitsnochange($n))) ;
+
+#null($n) :=
+       \ $n = 0 -> !c_0
+       \ tt     -> !c_($n) & #null($n-1);
+
+#full($n) :=
+       \ $n = 0 -> c_0
+       \ tt     -> c_($n) & #full($n-1);
+
+#increasecounter1($n) :=
+       \ $n = 0 -> tt
+       \ tt     -> (X c_$n <==> (c_$n <==> (c_($n-1) ==> X c_($n-1)))) & #increasecounter1($n-1);
+
+#hugemodelscounter1($n) := #null($n) & A G A( (X z) ==> ((c_0 <==> X !c_0) & #increasecounter1($n)));
+
+
+#hugemodelsflip($n) := A G A( (X (z & !#full($n))) ==> 
+                                  ( (#null($n) ==> f) & (!#null($n) ==> ((!f ==> X !f) & (f ==> (c <==> X f)))))) ;
+
+
+
+#hugemodelseven($n) := e & A G A( (X z) ==> (( (! #full($n)) ==> (e <==> X e)) & (#full($n) ==> (e <==> X !e))));
+
+#pathselaux($n) := 
+       \ $n < 0 -> tt
+       \ tt     -> (c_$n ==> F A G c_$n) & (!c_$n ==> F A G !c_$n) & #pathselaux($n-1);
+ 
+#pathselector($n) := (X z) & ((!#null($n)) ==> !(F(z & e & #null($n)) & F(z & !e & #null($n))))
+                            & (#null($n)    ==> !(F(z & e & #full($n)) & F(z & !e & #full($n))))
+                            & #pathselaux($n) ;
+
+#hugemodelscounter2($n) := !c & A((G z) ==> (!c U (c & #null($n)))) & 
+                            A G A( #pathselector($n) ==> ((f ==> ((c ==> F A G !c) & (!c ==> F A G c))) &
+                                                           (!f ==> ((c ==> F A G c) & (!c ==> F A G !c))))) ;
+#hugemodels($n) := #hugemodelsskeleton($n-1) &
+                   #hugemodelscounter1($n-1)  & 
+                   #hugemodelsflip($n-1)  &   
+                   #hugemodelseven($n-1)  & 
+                   #hugemodelscounter2($n-1)  ;
+				   
+				   
+/* ***************************************************
+** mmc guarded vs. non guarded
+*************************************************** */
+
+#guardedtesthelp3($i,$n) :=
+	\ $i < $n -> X_$i & #guardedtesthelp3($i+1,$n)
+	\ $i = $n -> X_$i;
+
+#guardedtesthelp2($i,$n) :=
+	\ $i < $n -> X_$i | #guardedtesthelp2($i+1,$n)
+	\ $i = $n -> X_$i;
+
+#guardedtesthelp1($i,$n) :=
+	\ $i > $n -> (#guardedtesthelp2(1,$n)) | (<>(#guardedtesthelp3(1,$n)))
+	\ $i % 2 = 1 -> nu X_$i.(#guardedtesthelp1($i+1,$n))
+	\ $i % 2 = 0 -> mu X_$i.(#guardedtesthelp1($i+1,$n));
+
+#guardedtest($n) := #guardedtesthelp1(1,$n);
+				   
+			
+#guardedtestx1($n,#chi) :=
+	\ $n > 0 -> mu X_$n.(#chi | (<b>X_$n) | #guardedtestx1($n-1,X_$n))
+	\ $n = 0 -> mu X_$n.(#chi | (<a>X_$n));
+
+#guardedtestx2($n,#chi) :=
+	\ $n > 0 -> mu Y_$n.(#chi | (<a>Y_$n) | #guardedtestx2($n-1,Y_$n))
+	\ $n = 0 -> mu Y_$n.(#chi | (<b>Y_$n));
+
+#guardedtestx($n) := #guardedtestx1($n,q) & !#guardedtestx2($n,q);
+				   
+				   
+				   
+/* ***************************************************
+** fairness ctl* sat
+*************************************************** */				   
+
+#fairnessctlstarsat1($i,$n) :=
+	\ $i <= $n -> (G F q_$i) & #fairnessctlstarsat1($i+1,$n)
+	\ tt -> tt;
+	
+#fairnessctlstarsat2($i,$n) :=
+	\ $i <= $n -> q_$i | #fairnessctlstarsat2($i+1,$n)
+	\ tt -> ff;
+	
+#fairnessctlstarsat3($i,$n) :=
+	\ $i <= $n -> ((q_$i | h_($i-1)) ==> h_$i) & #fairnessctlstarsat3($i+1,$n)
+	\ tt -> tt;
+	
+#fairnessctlstarsat4($i,$n) :=
+	\ $i <= $n -> (!(q_$i & h_($i-1))) & #fairnessctlstarsat4($i+1,$n)
+	\ tt -> tt;
+	
+#fairnessctlstarsat($n) := (E #fairnessctlstarsat1(1,$n)) & A G (#fairnessctlstarsat2(1,$n) & #fairnessctlstarsat3(2,$n) & #fairnessctlstarsat4(2,$n) & (q_1 ==> h_1));
+
+
+#testmex($i,$n) :=
+	\ $i < $n -> mu Y_$i.((()Y_$i) | (q_$i & ()#testmex($i+1,$n)))
+	\ $i = $n -> mu Y_$i.((()Y_$i) | (q_$i & ()X));
+	
+#testme($n) := nu X.#testmex(1,$n);
+
+
+
+
+
+#ctlplustest($n) :=
+	\ $n = 0 -> p
+	\ tt -> (A G (#ctlplustest($n-1) ==> E F ! #ctlplustest($n-1))) & (A G E F #ctlplustest($n-1));
+
+	
+#ctlplusconfluency($n) :=
+	\ $n = 0 -> p
+	\ tt -> (A G (! #ctlplusconfluency($n-1) ==> E F #ctlplusconfluency($n-1))) ==> A G E F #ctlplusconfluency($n-1);
+	
+	
