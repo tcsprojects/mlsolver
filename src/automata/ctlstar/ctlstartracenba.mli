@@ -1,5 +1,5 @@
 open Tcsautomata;;
-open Ctlstarformula;;
+open Tcsctlstarformula;;
 open Ctlstarthreadnba;;
 
 type rules = Branch of block * int * bool
@@ -9,7 +9,7 @@ type rules = Branch of block * int * bool
            | Delete of block * int
            | DeleteBlock of block
            
-val ctlstar_trace_nba_format_rule: Ctlstarformula.decomposed_ctlstar_formula -> rules -> string
+val ctlstar_trace_nba_format_rule: Tcsctlstarformula.decomposed_ctlstar_formula -> rules -> string
            
 
 type ('a, 'b) ctlstar_trace_nba_state = Failed
@@ -18,11 +18,11 @@ type ('a, 'b) ctlstar_trace_nba_state = Failed
                     | TrackingA of block * 'b
 
 val ctlstar_trace_nba :
-  Ctlstarformula.decomposed_ctlstar_formula ->
+  Tcsctlstarformula.decomposed_ctlstar_formula ->
   ('a, Ctlstarthreadnba.rules) DBA.t ->
   ('b, Ctlstarthreadnba.rules) NBA.t ->
   (('a, 'b) ctlstar_trace_nba_state, rules) NBA.t
   
 val ctlstar_trace_nba_state_size:
-  Ctlstarformula.decomposed_ctlstar_formula ->
+  Tcsctlstarformula.decomposed_ctlstar_formula ->
   NMAFunctions.state_size -> NMAFunctions.state_size -> NMAFunctions.state_size

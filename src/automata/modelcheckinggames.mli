@@ -1,4 +1,4 @@
-open Metaformula;;
+open Tcsmetaformula;;
 open Tcsmessage;;
 open Tcsgames;;
 

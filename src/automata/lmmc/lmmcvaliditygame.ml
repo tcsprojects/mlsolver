@@ -9,7 +9,7 @@ open Tcsarray;;
 open Tcstiming;;
 open Tcsbasedata;;
 open Tcsmessage;;
-open Lmmcformula;;
+open Tcslmmcformula;;
 open Lmmcthreadnba;;
 open Validitygames;;
 

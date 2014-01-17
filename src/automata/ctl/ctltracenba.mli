@@ -1,4 +1,4 @@
-open Ctlstarformula;;
+open Tcsctlstarformula;;
 
 type rules = Branch of block * int * bool
            | Follow of block * int
@@ -12,5 +12,5 @@ type ctl_trace_nba_state = Failed
            | Tracking of block * int
 
 val ctl_trace_nba :
-  Ctlstarformula.decomposed_ctlstar_formula ->
+  Tcsctlstarformula.decomposed_ctlstar_formula ->
   (ctl_trace_nba_state, rules) Tcsautomata.NBA.t

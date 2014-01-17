@@ -2,7 +2,7 @@ open Tcsset;;
 open Tcslist;;
 open Tcsautomata;;
 open Tcsbasedata;;
-open Ctlstarformula;;
+open Tcsctlstarformula;;
 open Ctlstarthreadnba;;
 
 type rules = Branch of block * int * bool

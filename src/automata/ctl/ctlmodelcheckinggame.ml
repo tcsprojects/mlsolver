@@ -8,7 +8,7 @@ open Tcsarray;;
 open Tcstiming;;
 open Tcsmessage;;
 open Modelcheckinggames;;
-open Ctlstarformula;;
+open Tcsctlstarformula;;
 			  
 type state = Tracking of block * int
            | Failed

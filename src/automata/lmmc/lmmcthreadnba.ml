@@ -1,6 +1,6 @@
 open Tcsbasedata;;
 open Tcsautomata;;
-open Lmmcformula;;
+open Tcslmmcformula;;
 
 type lmmc_thread_nba_state = Tracking of (int * int) | Waiting | Failed;;
 

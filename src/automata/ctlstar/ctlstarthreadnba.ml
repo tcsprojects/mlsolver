@@ -1,6 +1,6 @@
 open Tcsbasedata;;
 open Tcsautomata;;
-open Ctlstarformula;;
+open Tcsctlstarformula;;
 
 type ctlstar_thread_nba_state = Tracking of int | Waiting | Failed;;
 

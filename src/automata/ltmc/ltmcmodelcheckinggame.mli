@@ -5,6 +5,6 @@ type state =
 type modelchecking_game = state Tcsgames.initpg
 
 val get_modelchecking_game :
-  Ltmcformula.decomposed_ltmc_formula ->
+  Tcsltmcformula.decomposed_ltmc_formula ->
   Tcstransitionsys.explicit_initts ->
   modelchecking_game

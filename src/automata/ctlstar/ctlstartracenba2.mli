@@ -1,5 +1,5 @@
 open Tcsautomata;;
-open Ctlstarformula;;
+open Tcsctlstarformula;;
 
 type rules = Ctlstartracenba.rules
 
@@ -9,9 +9,9 @@ type ctlstar_trace_nba2_state = Failed
 		   | TrackingA of block * int
 
 val ctlstar_trace_nba2 :
-  Ctlstarformula.decomposed_ctlstar_formula ->
+  Tcsctlstarformula.decomposed_ctlstar_formula ->
   (ctlstar_trace_nba2_state, rules) NBA.t
   
 val ctlstar_trace_nba2_state_size:
-  Ctlstarformula.decomposed_ctlstar_formula ->
+  Tcsctlstarformula.decomposed_ctlstar_formula ->
   NMAFunctions.state_size

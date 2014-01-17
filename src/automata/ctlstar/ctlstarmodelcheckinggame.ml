@@ -10,7 +10,7 @@ open Tcsarray;;
 open Tcstiming;;
 open Tcsmessage;;
 open Modelcheckinggames;;
-open Ctlstarformula;;
+open Tcsctlstarformula;;
 open Ctlstarthreadnba;;
 
 type ('a, 'b) nba_state = NbaFailed

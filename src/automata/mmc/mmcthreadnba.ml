@@ -1,6 +1,6 @@
 open Tcsbasedata;;
 open Tcsautomata;;
-open Mmcformula;;
+open Tcsmmcformula;;
 
 type mmc_thread_nba_state = Tracking of (int * int) | Waiting | Failed;;
 

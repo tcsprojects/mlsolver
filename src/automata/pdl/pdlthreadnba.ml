@@ -1,6 +1,6 @@
 open Tcsbasedata;;
 open Tcsautomata;;
-open Pdlformula;;
+open Tcspdlformula;;
 
 (* Run not accepting iff corresponding to nu thread *)
 

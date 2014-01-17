@@ -9,7 +9,7 @@ open Tcsarray;;
 open Tcstiming;;
 open Tcsmessage;;
 open Tcsbasedata;;
-open Ctlstarformula;;
+open Tcsctlstarformula;;
 open Validitygames;;
 open Ctltracenba;;
 

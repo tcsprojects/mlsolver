@@ -16,14 +16,8 @@ TCSLIBOBJ=$(TCSLIBROOT)/obj
 INCLUDES=-I $(SRCDIR) -I $(OBJDIR) -I $(OCAML_DIR) -I $(TCSLIBOBJ) $(ADDINCL)
 
 MODULES=$(TCSLIBOBJ)/tcslib.cmxa \
-	$(OBJDIR)/metaformula.cmx \
 	$(OBJDIR)/validitygames.cmx \
 	$(OBJDIR)/modelcheckinggames.cmx \
-	$(OBJDIR)/lmmcformula.cmx \
-	$(OBJDIR)/mmcformula.cmx \
-	$(OBJDIR)/ltmcformula.cmx \
-	$(OBJDIR)/ctlstarformula.cmx \
-	$(OBJDIR)/pdlformula.cmx \
 	$(OBJDIR)/lmmcthreadnba.cmx \
 	$(OBJDIR)/mmcthreadnba.cmx \
 	$(OBJDIR)/ltmcthreadnba.cmx \
@@ -48,30 +42,19 @@ MODULES=$(TCSLIBOBJ)/tcslib.cmxa \
 	$(OBJDIR)/pgsolvers.cmx \
 	$(OBJDIR)/externalsolver.cmx
 
-PARSER_SRC=$(SRCDIR)/formula/parser/parser.ml
-LEXER_SRC=$(SRCDIR)/formula/parser/lexer.ml
-PARSERHELPER_SRC=$(SRCDIR)/formula/parser/parserhelper.ml
-
-MORE_MODULES=$(OBJDIR)/parser.cmx \
-	     $(OBJDIR)/lexer.cmx \
-		 $(OBJDIR)/parserhelper.cmx
-
 INTERFACES=$(MODULES:.cmx=.cmi)
-PARSER_IFC=$(OBJDIR)/parser.cmi
-PARSERHELPER_IFC=$(OBJDIR)/parserhelper.cmi
-
 EXECUTABLE=$(BINDIR)/mlsolver
 
 PACKAGE=mlsolver.tar
 
-solver: $(INTERFACES) $(ADDINTF) parserlexer $(PARSER_IFC) $(MODULES) $(ADDMODULES) $(MORE_MODULES) main exec
+solver: $(INTERFACES) $(ADDINTF) $(MODULES) $(ADDMODULES)  main exec
 
 all: solver generators
 
 main: $(OBJDIR)/main.cmx
 
 exec:
-	$(OCAMLOPT) $(CPPCOMPILER) -o $(EXECUTABLE) $(MODULES) $(ADDMODULES) $(MORE_MODULES) $(OBJDIR)/main.cmx
+	$(OCAMLOPT) $(CPPCOMPILER) -o $(EXECUTABLE) $(MODULES) $(ADDMODULES)  $(OBJDIR)/main.cmx
 	
 $(PGSOLVER)/libpgsolver.cmi:
 	make -C $(PGSOLVER)/.. all
@@ -95,27 +78,6 @@ $(OBJDIR)/%.cmx: $(SRCDIR)/generators/%.ml
 	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
 
 $(OBJDIR)/%.cmx: $(SRCDIR)/pgsolvers/%.ml
-	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
-
-$(OBJDIR)/%.cmx: $(SRCDIR)/formula/%.ml
-	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
-
-$(OBJDIR)/%.cmx: $(SRCDIR)/formula/lmmc/%.ml
-	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
-
-$(OBJDIR)/%.cmx: $(SRCDIR)/formula/mmc/%.ml
-	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<	
-
-$(OBJDIR)/%.cmx: $(SRCDIR)/formula/ltmc/%.ml
-	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<	
-
-$(OBJDIR)/%.cmx: $(SRCDIR)/formula/ctlstar/%.ml
-	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
-
-$(OBJDIR)/%.cmx: $(SRCDIR)/formula/pdl/%.ml
-	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
-
-$(OBJDIR)/%.cmx: $(SRCDIR)/formula/parser/%.ml
 	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
 
 $(OBJDIR)/%.cmx: $(SRCDIR)/automata/%.ml
@@ -151,24 +113,6 @@ $(OBJDIR)/%.cmi: $(SRCDIR)/mlsolver/%.mli
 $(OBJDIR)/%.cmi: $(SRCDIR)/pgsolvers/%.mli
 	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
 
-$(OBJDIR)/%.cmi: $(SRCDIR)/formula/lmmc/%.mli
-	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
-
-$(OBJDIR)/%.cmi: $(SRCDIR)/formula/mmc/%.mli
-	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
-
-$(OBJDIR)/%.cmi: $(SRCDIR)/formula/ltmc/%.mli
-	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
-
-$(OBJDIR)/%.cmi: $(SRCDIR)/formula/ctlstar/%.mli
-	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
-
-$(OBJDIR)/%.cmi: $(SRCDIR)/formula/pdl/%.mli
-	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
-
-$(OBJDIR)/%.cmi: $(SRCDIR)/formula/%.mli
-	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
-
 $(OBJDIR)/%.cmi: $(SRCDIR)/automata/lmmc/%.mli
 	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
 
@@ -189,23 +133,8 @@ $(OBJDIR)/%.cmi: $(SRCDIR)/automata/ctl/%.mli
 
 $(OBJDIR)/%.cmi: $(SRCDIR)/automata/%.mli
 	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
-
-$(OBJDIR)/%.cmi: $(SRCDIR)/formula/parser/%.mli
-	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
-
 $(OBJDIR)/%.cmi: $(SRCDIR)/%.mli
-	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<
-
-$(SRCDIR)/formula/parser/parser.ml: $(SRCDIR)/formula/parser/parser.mly
-	$(OCAMLYACC) $(SRCDIR)/formula/parser/parser.mly
-
-$(OBJDIR)/parser.cmi: $(SRCDIR)/formula/parser/parser.mli
-	$(OCAMLOPT) $(INCLUDES) -c -o $(OBJDIR)/parser.cmi $(SRCDIR)/formula/parser/parser.mli
-
-$(SRCDIR)/formula/parser/lexer.ml: $(SRCDIR)/formula/parser/lexer.mll
-	$(OCAMLLEX) $(SRCDIR)/formula/parser/lexer.mll
-
-parserlexer: $(INTERFACES) $(PARSER_SRC) $(PARSER_IFC) $(LEXER_SRC) $(PARSERHELPER_IFC) $(PARSERHELPER_SRC) 
+	$(OCAMLOPT) $(INCLUDES) -c -o $@ $<	
 
 generators: pdlsudokugenerator ctlstarsudokugenerator mucalcsudokugenerator ltmcparitybuechigenerator elevatortsgenerator philosopherstsgenerator
 
@@ -228,7 +157,7 @@ philosopherstsgenerator: $(OBJDIR)/philosophersts.cmx
 	$(OCAMLOPT) $(INCLUDES) -o bin/philosopherstsgenerator $(OBJDIR)/philosophersts.cmx
 
 tools: $(OBJDIR)/guarded_trafo_worst_case.cmx
-	$(OCAMLOPT) $(CPPCOMPILER) -o $(BINDIR)/guarded_trafo_worst_case $(MODULES) $(ADDMODULES) $(MORE_MODULES) $(OBJDIR)/guarded_trafo_worst_case.cmx
+	$(OCAMLOPT) $(CPPCOMPILER) -o $(BINDIR)/guarded_trafo_worst_case $(MODULES) $(ADDMODULES)  $(OBJDIR)/guarded_trafo_worst_case.cmx
 
 
 package:
@@ -247,5 +176,4 @@ packagewithpgsolver: package
 
 clean:
 	rm -f $(OBJDIR)/*.o $(OBJDIR)/*.cmx $(OBJDIR)/*.cmi
-	rm -f $(SRCDIR)/formula/parser/parser.ml $(SRCDIR)/formula/parser/parser.mli $(SRCDIR)/formula/parser/lexer.ml
 	rm -f $(EXECUTABLE)

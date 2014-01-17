@@ -1,7 +1,7 @@
 open Tcsautomata;;
 open Tcsbasedata;;
 open Tcsset;;
-open Ctlstarformula;;
+open Tcsctlstarformula;;
 open Ctlstartracenba;;
 
 type rules = Ctlstartracenba.rules

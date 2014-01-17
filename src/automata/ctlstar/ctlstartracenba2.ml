@@ -2,7 +2,7 @@ open Tcsautomata;;
 open Tcsbasedata;;
 open Tcsset;;
 open Tcslist;;
-open Ctlstarformula;;
+open Tcsctlstarformula;;
 open Ctlstartracenba;;
 
 type ctlstar_trace_nba2_state = Failed

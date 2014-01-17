@@ -2,7 +2,7 @@ open Tcsbasedata;;
 open Tcsautomata;;
 open Tcsset;;
 open Tcslist;;
-open Ctlstarformula;;
+open Tcsctlstarformula;;
 
 type rules = Branch of block * int * bool
            | Follow of block * int

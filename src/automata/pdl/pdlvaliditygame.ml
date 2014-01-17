@@ -9,7 +9,7 @@ open Tcsarray;;
 open Tcsbasedata;;
 open Tcstiming;;
 open Tcsmessage;;
-open Pdlformula;;
+open Tcspdlformula;;
 open Pdlthreadnba;;
 open Validitygames;;
 

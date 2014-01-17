@@ -1,5 +1,5 @@
 open Arg ;;
-open Parserhelper ;;
+open Tcsformulaparse ;;
 open Validitygames;;
 open Modelcheckinggames;;
 open Tcsautomataparser;;
@@ -9,7 +9,7 @@ open Tcstransitionsys;;
 open Tcstiming;;
 open Tcsargs;;
 open Tcsmessage;;
-open Metaformula;;
+open Tcsmetaformula;;
 open Pgsolvers;;
 
 type mlsolvermode = NoMode |
@@ -157,14 +157,14 @@ let _ =
 		|	InputFromFile f -> (
 			info_msg (fun _ -> "Parsing environment... ");
 			let t = SimpleTiming.init true in
-			let env = Parser.program Lexer.lexer (Lexing.from_channel (open_in f)) in
+			let env = Tcsformulaparser.program Tcsformulalexer.lexer (Lexing.from_channel (open_in f)) in
 			info_msg (fun _ -> (SimpleTiming.format t) ^ "\n");
 			env
 		)
 		|	InputFromStdIn -> (
 			info_msg (fun _ -> "Parsing environment... ");
 			let t = SimpleTiming.init true in
-			let env = Parser.program Lexer.lexer (Lexing.from_channel stdin) in
+			let env = Tcsformulaparser.program Tcsformulalexer.lexer (Lexing.from_channel stdin) in
 			info_msg (fun _ -> (SimpleTiming.format t) ^ "\n");
 			env
 		)

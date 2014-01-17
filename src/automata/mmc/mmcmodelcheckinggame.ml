@@ -5,7 +5,7 @@ open Tcslist;;
 open Tcsarray;;
 open Tcstiming;;
 open Tcsmessage;;
-open Mmcformula;;
+open Tcsmmcformula;;
 open Modelcheckinggames;;
 
 type state =
