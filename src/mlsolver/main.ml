@@ -102,7 +102,7 @@ let total_transform game =
 	
 let header =
 		"Modal Logic Solver 1.2\n" ^ 
-		"Authors: Oliver Friedmann (University of Munich) and Martin Lange (University of Kassel), 2008-2013\n\n"
+		"Authors: Oliver Friedmann (University of Munich) and Martin Lange (University of Kassel), 2008-2016\n\n"
 
 let _ =
 	SimpleArgs.parsedef speclist (fun f -> formula_string := f) (header ^ "Usage: mlsolver [options] [formula]\n" ^

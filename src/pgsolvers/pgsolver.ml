@@ -1,9 +1,10 @@
 open Libpgsolver;;
+open Paritygame;;
 open Tcsbasedata;;
 
 let use_pgsolver options game =
 	let (solver, _, _) = find_solver options.(0) in
-	solver [||] (Array.map (fun (a,b,c,_) -> (a,b,c,None)) game);;
+	solver [||] (pg_init (Array.length game) (fun i -> let (a,b,c,_) = game.(i) in (a,b,c,None)));;
 
 Pgsolvers.register_solver use_pgsolver
                           "pgsolver"

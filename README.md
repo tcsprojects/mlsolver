@@ -3,7 +3,7 @@ MLSolver
 
 A tool for solving the satisfiability and validity problems for modal fixpoint logics.
 
-Version 1.2, Copyright (c) 2008-2013
+Version 1.2, Copyright (c) 2008-2016
 
 It is developed and maintained by:
 - (c) Oliver Friedmann, University of Munich (http://oliverfriedmann.de)
