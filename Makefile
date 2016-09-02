@@ -13,7 +13,7 @@ endif
 
 TCSLIBOBJ=$(TCSLIBROOT)/obj
 
-INCLUDES=-I $(SRCDIR) -I $(OBJDIR) -I $(OCAML_DIR) -I $(TCSLIBOBJ) $(ADDINCL)
+INCLUDES=-I $(SRCDIR) -I $(OBJDIR) -I $(TCSLIBOBJ) $(ADDINCL)
 
 MODULES=$(TCSLIBOBJ)/tcslib.cmxa \
 	$(OBJDIR)/validitygames.cmx \
