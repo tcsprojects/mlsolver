@@ -55,11 +55,11 @@ let help_message _ =
 
 let _ =
   let binarymode = try
-                     (String.uppercase Sys.argv.(1)) = "BINARY" 
+                     (String.uppercase_ascii Sys.argv.(1)) = "BINARY"
                    with _ -> help_message ()
   in
   let unarymode = try
-                     (String.uppercase Sys.argv.(1)) = "UNARY" 
+                     (String.uppercase_ascii Sys.argv.(1)) = "UNARY"
                   with _ -> help_message ()
   in
   let n = try
@@ -69,9 +69,9 @@ let _ =
 
   if unarymode then  
   begin
-  (* Nummerierung der Zustände mit Propositionen für Reihen (r), Spalten (c), Blöcken (x,y) *)
+  (* Nummerierung der Zustï¿½nde mit Propositionen fï¿½r Reihen (r), Spalten (c), Blï¿½cken (x,y) *)
 
-  (* erster Zustand repräsentiert Reihe 1, Spalte 1, Block (1,1) *)
+  (* erster Zustand reprï¿½sentiert Reihe 1, Spalte 1, Block (1,1) *)
   print_string ("#phi := " ^ prop R 1 ^ " & " ^ prop C 1 ^ " & " ^ prop X 1 ^ " & " ^ prop Y 1 ^ " &\n");
   
   (* jeder Zustand hat nur eine Reihe etc. *)
@@ -111,13 +111,13 @@ let _ =
   (* jeder andere Zustand hat mindestens einen Nachfolger *)
   print_string ("[a^*]((!" ^ prop X n ^ " | !" ^ prop Y n ^ " | !" ^ prop R n ^ " | !" ^ prop C n ^ ") ==> <a>tt) & \n");
 
-  (* es wird immer um eine Reihe mod n weitergezählt *)
+  (* es wird immer um eine Reihe mod n weitergezï¿½hlt *)
   print_string "[a^*](";
   printloop 1 n " & "
              (fun i -> print_string ("(" ^ prop R i ^ " ==> [a]" ^ prop R ((i mod n)+1) ^ ")"));
   print_string ") &\n";
 
-  (* es wird immer um eine Spalte mod n weitergezählt, wenn Reihe komplett ist *)
+  (* es wird immer um eine Spalte mod n weitergezï¿½hlt, wenn Reihe komplett ist *)
   print_string ("[a^*]((" ^ prop R n ^ " ==> (");
   printloop 1 n " & "
              (fun i -> print_string ("(" ^ prop C i ^ " ==> [a]" ^ prop C ((i mod n)+1) ^ ")"));
@@ -126,7 +126,7 @@ let _ =
              (fun i -> print_string ("(" ^ prop C i ^ " ==> [a]" ^ prop C i ^ ")"));
   print_string "))) &\n";
 
-  (* es wird immer um eine X-Komponente weitergezählt, wenn Spalte komplett ist *)
+  (* es wird immer um eine X-Komponente weitergezï¿½hlt, wenn Spalte komplett ist *)
   print_string ("[a^*]((" ^ prop C n ^ " ==> (");
   printloop 1 n " & "
              (fun i -> print_string ("(" ^ prop X i ^ " ==> [a]" ^ prop X ((i mod n)+1) ^ ")"));
@@ -135,7 +135,7 @@ let _ =
              (fun i -> print_string ("(" ^ prop X i ^ " ==> [a]" ^ prop X i ^ ")"));
   print_string "))) &\n";
 
-  (* es wird immer um eine Y-Komponente weitergezählt, wenn X-Komponente am Ende ist *)
+  (* es wird immer um eine Y-Komponente weitergezï¿½hlt, wenn X-Komponente am Ende ist *)
   print_string ("[a^*]((" ^ prop X n ^ " ==> (");
   printloop 1 n " & "
              (fun i -> print_string ("(" ^ prop Y i ^ " ==> [a]" ^ prop Y ((i mod n)+1) ^ ")"));
@@ -193,7 +193,7 @@ let _ =
   let bnn = (bits (n*n))-1 in
 
   print_string "#phi := ";
-  (* erster Zustand repräsentiert Reihe 1, Spalte 1, Block (1,1) *)
+  (* erster Zustand reprï¿½sentiert Reihe 1, Spalte 1, Block (1,1) *)
   printloop 0 bn " & " (fun i -> print_string ("!" ^ prop R i ^ " & !" ^ prop C i ^ " & !" ^ prop X i ^ " & !" ^ 
                                                prop Y i));
   print_string " &\n";
@@ -234,7 +234,7 @@ let _ =
   (* jeder andere Zustand hat mindestens einen Nachfolger *)
   print_string ("[a^*]((!(" ^ exX ^ ") | !(" ^ exY ^ ") | !(" ^ exR ^ ") | !(" ^ exC ^ ")) <==> <a>tt) & \n");
 
-  (* es wird immer um eine Reihe mod n weitergezählt *)
+  (* es wird immer um eine Reihe mod n weitergezï¿½hlt *)
   print_string ("[a^*]((" ^ exR ^ " ==> [a](");
   printloop 0 bn " & " (fun i -> print_string ("!" ^ prop R i));
   print_string (")) & (!(" ^ exR ^ ") ==> ((" ^ prop R 0 ^ " ==> [a]!" ^ prop R 0 ^ ") & (!" ^ prop R 0 ^
@@ -247,7 +247,7 @@ let _ =
                             " & <a>!" ^ pi' ^ "))) | (!" ^ pi ^ " & " ^ pi' ^ " & <a>!" ^ pi' ^ ")))"));   
   print_string "))) & \n";
   
-  (* es wird immer um eine Spalte mod n weitergezählt, wenn Reihe komplett ist *)
+  (* es wird immer um eine Spalte mod n weitergezï¿½hlt, wenn Reihe komplett ist *)
   print_string ("[a^*]((" ^ exR ^ " ==> ((" ^ exC ^ " ==> [a](");
   printloop 0 bn " & " (fun i -> print_string ("!" ^ prop C i));
   print_string (")) & (!(" ^ exC ^ ") ==> ((" ^ prop C 0 ^ " ==> [a]!" ^ prop C 0 ^ ") & (!" ^ prop C 0 ^
@@ -263,7 +263,7 @@ let _ =
   print_string "))) &\n"; 
   
 
-  (* es wird immer um eine X-Komponente weitergezählt, wenn Spalte komplett ist *)
+  (* es wird immer um eine X-Komponente weitergezï¿½hlt, wenn Spalte komplett ist *)
   print_string ("[a^*]((" ^ exC ^ " ==> ((" ^ exX ^ " ==> [a](");
   printloop 0 bn " & " (fun i -> print_string ("!" ^ prop C i));
   print_string (")) & (!(" ^ exX ^ ") ==> ((" ^ prop X 0 ^ " ==> [a]!" ^ prop X 0 ^ ") & (!" ^ prop X 0 ^
@@ -279,7 +279,7 @@ let _ =
   print_string "))) &\n"; 
   
 
-  (* es wird immer um eine Y-Komponente weitergezählt, wenn X-Komponente am Ende ist *)
+  (* es wird immer um eine Y-Komponente weitergezï¿½hlt, wenn X-Komponente am Ende ist *)
   print_string ("[a^*]((" ^ exX ^ " ==> ((" ^ exY ^ " ==> [a](");
   printloop 0 bn " & " (fun i -> print_string ("!" ^ prop X i));
   print_string (")) & (!(" ^ exY ^ ") ==> ((" ^ prop Y 0 ^ " ==> [a]!" ^ prop Y 0 ^ ") & (!" ^ prop Y 0 ^

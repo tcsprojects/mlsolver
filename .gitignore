@@ -17,3 +17,5 @@ doc/main.dvi
 *.log
 doc/main.thm
 doc/main.toc
+.idea
+_build
