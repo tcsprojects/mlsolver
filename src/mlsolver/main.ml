@@ -12,6 +12,7 @@ open Tcsmessage;;
 open Tcsmetaformula;;
 open Pgsolvers;;
 open Logics;;
+open Pgsolver;;
 
 type mlsolvermode = NoMode |
                     Validity of (bool * string) |

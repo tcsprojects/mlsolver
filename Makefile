@@ -1,3 +1,5 @@
+LIBS = nums,str
+
 all: solver generators tools
 
 generators: pdlsudokugenerator ctlstarsudokugenerator mucalcsudokugenerator ltmcparitybuechigenerator elevatortsgenerator philosopherstsgenerator
@@ -5,7 +7,7 @@ generators: pdlsudokugenerator ctlstarsudokugenerator mucalcsudokugenerator ltmc
 tools: guarded_trafo_worst_case
 
 solver:
-	ocamlbuild main.native
+	ocamlbuild -libs $(LIBS) main.native
 	mv main.native bin/mlsolver
 
 guarded_trafo_worst_case:

@@ -1,10 +1,21 @@
-open Libpgsolver;;
+open Generatedsat;;
+open Solvers ;;
+open Solverlist;;
+
 open Paritygame;;
 open Tcsbasedata;;
 
 let use_pgsolver options game =
 	let (solver, _, _) = find_solver options.(0) in
-	solver [||] (pg_init (Array.length game) (fun i -> let (a,b,c,_) = game.(i) in (a,b,c,None)));;
+	let (sol, strat) = solver [||] (pg_init (Array.length game) (fun i ->
+	    let (a,b,c,_) = game.(i) in
+	    (* (a,if b = 0 then plr_Even else plr_Odd, Array.to_list c,None))*)
+	    let pl = if b = 0 then plr_Even else plr_Odd in
+	    (a, pl, Array.to_list c, None)
+	)) in
+	(Array.map (fun pl -> if pl = plr_Even then 0 else 1) sol, strat);;
+
+
 
 Pgsolvers.register_solver use_pgsolver
                           "pgsolver"
@@ -14,7 +25,7 @@ Pgsolvers.register_solver use_pgsolver
 
 let use_partial_pgsolver options ((init, delta, omega, player, format), _) =
 	let data i =
-		(omega i, (if player i then 0 else 1))
+		(omega i, (if player i then plr_Even else plr_Odd))
 	in
 	let format' i =
 		let s = format i in
@@ -23,7 +34,7 @@ let use_partial_pgsolver options ((init, delta, omega, player, format), _) =
 	let game = (init, (fun i -> Enumerators.of_list (delta i)), data, format') in
 	let (solver, _, _) = find_partial_solver options.(0) in
 	let res = solver [||] game in
-	let sol' i = Some (fst (res i) = 0) in
+	let sol' i = Some (fst (res i) = plr_Even) in
 	let strat' i = snd (res i) in
 	(sol', strat');;
 

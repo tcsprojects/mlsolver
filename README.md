@@ -20,6 +20,7 @@ git clone https://github.com/tcsprojects/mlsolver.git
 cd mlsolver
 git submodule update --init
 cd pgsolver
+touch temp/Generatedsat.ml
 git submodule update --init
 cd ..
 make
