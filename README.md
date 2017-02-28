@@ -25,3 +25,12 @@ git submodule update --init
 cd ..
 make
 ```
+
+
+## Test
+
+You can verify that everything is working by calling:
+
+````bash
+bin/ltmcparitybuechigenerator 3 | bin/mlsolver -stenv -val ltmc "#phi" -pgs recursive
+```
