@@ -7,8 +7,8 @@ generators: pdlsudokugenerator ctlstarsudokugenerator mucalcsudokugenerator ltmc
 tools: guarded_trafo_worst_case
 
 solver:
-	ocamlbuild -libs $(LIBS) main.native
-	mv main.native bin/mlsolver
+	ocamlbuild -libs $(LIBS) mlsolver.native
+	mv mlsolver.native bin/mlsolver
 
 guarded_trafo_worst_case:
 	ocamlbuild guarded_trafo_worst_case.native
