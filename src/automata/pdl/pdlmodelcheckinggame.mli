@@ -8,3 +8,5 @@ val get_modelchecking_game :
   Tcspdlformula.decomposed_pdl_formula ->
   Tcstransitionsys.explicit_initlts ->
   modelchecking_game
+
+val register: unit -> unit

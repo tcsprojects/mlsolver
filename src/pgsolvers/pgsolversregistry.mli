@@ -1,4 +1,6 @@
-type solver_func = Pgsolversregistry.solver_func
+open Tcsgames
+
+type solver_func = (string array -> (explicit_pg -> explicit_pg_solution * explicit_pg_strategy))
 
 val register_solver: solver_func -> string -> string -> string -> unit
 
@@ -11,7 +13,7 @@ val enum_solvers: (solver_func -> string -> string -> string -> unit) -> unit
 val fold_solvers: (solver_func -> string -> string -> string -> 'a -> 'a) -> 'a -> 'a
 
 
-type partial_solver_func = Pgsolversregistry.partial_solver_func
+type partial_solver_func = (string array -> (int initpg -> int initpg_solution * int initpg_strategy))
 
 val register_partial_solver: partial_solver_func -> string -> string -> string -> unit
 

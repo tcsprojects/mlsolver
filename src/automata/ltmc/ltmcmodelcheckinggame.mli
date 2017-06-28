@@ -8,3 +8,5 @@ val get_modelchecking_game :
   Tcsltmcformula.decomposed_ltmc_formula ->
   Tcstransitionsys.explicit_initts ->
   modelchecking_game
+
+val register: unit -> unit

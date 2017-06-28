@@ -20,7 +20,7 @@ let call_external_solver options game =
 	ret;;
 
 
-Pgsolvers.register_solver parse_solution_only_solver "parsesolution" "ps" "<file>\n     Parses the solution to the decision game and draws conclusions";;
-
-Pgsolvers.register_solver call_external_solver "callexternal" "ce" ("<commandline>\n     Calls external parity game solver," ^
-				              "\n     e.g. -ce \"pgsolverbin -re -v 0 --solonly\"");;
+let register _ =
+    Pgsolversregistry.register_solver parse_solution_only_solver "parsesolution" "ps" "<file>\n     Parses the solution to the decision game and draws conclusions";
+    Pgsolversregistry.register_solver call_external_solver "callexternal" "ce" ("<commandline>\n     Calls external parity game solver," ^
+                                  "\n     e.g. -ce \"pgsolverbin -re -v 0 --solonly\"");;

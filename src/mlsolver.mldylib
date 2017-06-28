@@ -1,0 +1,21 @@
+# OASIS_START
+# DO NOT EDIT (digest: a1884028e706df4bdcac296552c7dea3)
+mlsolver/Logics
+pgsolvers/Pgsolvers
+pgsolvers/Pgsolver
+pgsolvers/Externalsolver
+automata/Modelcheckinggames
+automata/Validitygames
+automata/ctl/Ctlmodelcheckinggame
+automata/ctl/Ctlvaliditygame
+automata/ctlstar/Ctlstarmodelcheckinggame
+automata/ctlstar/Ctlstarvaliditygame
+automata/lmmc/Lmmcmodelcheckinggame
+automata/lmmc/Lmmcvaliditygame
+automata/ltmc/Ltmcmodelcheckinggame
+automata/ltmc/Ltmcvaliditygame
+automata/mmc/Mmcmodelcheckinggame
+automata/mmc/Mmcvaliditygame
+automata/pdl/Pdlmodelcheckinggame
+automata/pdl/Pdlvaliditygame
+# OASIS_STOP

@@ -11,7 +11,7 @@ open Tcsbasedata;;
 open Tcsmessage;;
 open Tcslmmcformula;;
 open Lmmcthreadnba;;
-open Validitygames;;
+open Validitygamesregistry;;
 
 type 'a state =
     TT
@@ -428,5 +428,5 @@ let validity_proc formula options (info_chan, formula_chan, constr_chan) =
    (game_cached', show_stats, (fun sol strat -> if sol init = Some true then FormulaValid else FormulaFalsifiableBy (counter_mod strat)));;
    
    
-	
-Validitygames.register_validity_procedure validity_proc "lmmc" "Decision Procedure For Labelled Modal Mu Calculus"
+let register _ =
+    register_validity_procedure validity_proc "lmmc" "Decision Procedure For Labelled Modal Mu Calculus"

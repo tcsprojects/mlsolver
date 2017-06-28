@@ -1,0 +1,13 @@
+# OASIS_START
+# DO NOT EDIT (digest: 22c096e60bb25871ee4e41743ae7710d)
+version = "1.4"
+description =
+"A tool for solving the satisfiability and validity problems for modal fixpoint logics."
+requires = "num str TCSLib extlib ocaml-sat-solvers minisat pgsolver"
+archive(byte) = "mlsolver.cma"
+archive(byte, plugin) = "mlsolver.cma"
+archive(native) = "mlsolver.cmxa"
+archive(native, plugin) = "mlsolver.cmxs"
+exists_if = "mlsolver.cma"
+# OASIS_STOP
+

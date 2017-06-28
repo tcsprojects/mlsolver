@@ -8,3 +8,5 @@ val get_modelchecking_game :
   Tcslmmcformula.decomposed_labelled_mmc_formula ->
   Tcstransitionsys.explicit_initlts ->
   modelchecking_game
+
+val register: unit -> unit

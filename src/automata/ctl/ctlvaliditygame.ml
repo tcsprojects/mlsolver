@@ -10,7 +10,7 @@ open Tcstiming;;
 open Tcsmessage;;
 open Tcsbasedata;;
 open Tcsctlstarformula;;
-open Validitygames;;
+open Validitygamesregistry;;
 open Ctltracenba;;
 
 type 'a state =
@@ -491,5 +491,5 @@ let validity_proc formula options (info_chan, formula_chan, constr_chan) =
    (game_cached', show_stats, (fun sol strat -> if sol init = Some true then FormulaValid else FormulaFalsifiableBy (counter_mod strat)));;
 
 
-
-Validitygames.register_validity_procedure validity_proc "ctl" "Decision Procedure For CTL"
+let register _ =
+    register_validity_procedure validity_proc "ctl" "Decision Procedure For CTL"

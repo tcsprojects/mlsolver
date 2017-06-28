@@ -14,7 +14,7 @@ open Ctlstartracenba;;
 open Ctlstarthreadnba;;
 open Ctlstartracenba2;;
 open Ctlplustracenba;;
-open Validitygames;;
+open Validitygamesregistry;;
 
 type 'a state =
     TT
@@ -585,4 +585,5 @@ let validity_proc formula options (info_chan, formula_chan, constr_chan) =
 
 
 
-Validitygames.register_validity_procedure validity_proc "ctlstar" "Decision Procedure For CTL*"
+let register _ =
+    register_validity_procedure validity_proc "ctlstar" "Decision Procedure For CTL*"

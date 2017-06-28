@@ -8,7 +8,7 @@
 *.cmx
 *.cmxs
 *.cmxa
-bin/*
+
 Config
 *.aux
 *.bbl
@@ -19,3 +19,9 @@ doc/main.thm
 doc/main.toc
 .idea
 _build
+*.byte
+
+bin/*
+setup.data
+*.byte
+*.cache

@@ -1,0 +1,58 @@
+OASISFormat: 0.4
+Name:        mlsolver
+Version:     1.4
+Synopsis:    A tool for solving the satisfiability and validity problems for modal fixpoint logics.
+Description: A tool for solving the satisfiability and validity problems for modal fixpoint logics.
+Authors:     Oliver Friedmann, Martin Lange
+Maintainers: Oliver Friedmann, Martin Lange
+OCamlVersion: >= 4.03.0
+License:     BSD-3-clause
+Homepage: https://github.com/tcsprojects/mlsolver
+SourceRepository head
+  Type: git
+  Location: git://github.com/tcsprojects/mlsolver.git
+  Browser: https://github.com/tcsprojects/mlsolver
+Plugins:     META
+BuildTools: ocamlbuild
+Library "mlsolver"
+  Path:       src
+  BuildDepends: num, str, TCSLib, extlib, ocaml-sat-solvers, minisat, pgsolver
+  Modules: mlsolver/Logics, pgsolvers/Pgsolvers, pgsolvers/Pgsolver, pgsolvers/Externalsolver,
+           automata/Modelcheckinggames, automata/Validitygames, automata/ctl/Ctlmodelcheckinggame,
+           automata/ctl/Ctlvaliditygame, automata/ctlstar/Ctlstarmodelcheckinggame,
+           automata/ctlstar/Ctlstarvaliditygame, automata/lmmc/Lmmcmodelcheckinggame, automata/lmmc/Lmmcvaliditygame,
+           automata/ltmc/Ltmcmodelcheckinggame, automata/ltmc/Ltmcvaliditygame, automata/mmc/Mmcmodelcheckinggame,
+           automata/mmc/Mmcvaliditygame, automata/pdl/Pdlmodelcheckinggame, automata/pdl/Pdlvaliditygame
+PostBuildCommand: mv mlsolver.* bin/mlsolver ; mv guarded_trafo_worst_case.* bin/guarded_trafo_worst_case ; mv ctlstarsudoku.* bin/ctlstarsudoku ; mv elevatorts.* bin/elevatorts ; mv ltmcparitybuechi.* bin/ltmcparitybuechi ; mv mucalcsudoku.* bin/mucalcsudoku ; mv pdlsudoku.* bin/pdlsudoku ; mv philosophersts.* bin/philosophersts
+Executable "mlsolver-bin"
+  Path: src/mlsolver
+  BuildDepends: mlsolver
+  MainIs: mlsolver.ml
+Executable "guarded_trafo_worst_case-bin"
+  Path: src/tools
+  BuildDepends: mlsolver
+  MainIs: guarded_trafo_worst_case.ml
+Executable "ctlstarsudoku-bin"
+  Path: src/generators
+  BuildDepends: mlsolver
+  MainIs: ctlstarsudoku.ml
+Executable "elevatorts-bin"
+  Path: src/generators
+  BuildDepends: mlsolver
+  MainIs: elevatorts.ml
+Executable "ltmcparitybuechi-bin"
+  Path: src/generators
+  BuildDepends: mlsolver
+  MainIs: ltmcparitybuechi.ml
+Executable "mucalcsudoku-bin"
+  Path: src/generators
+  BuildDepends: mlsolver
+  MainIs: mucalcsudoku.ml
+Executable "pdlsudoku-bin"
+  Path: src/generators
+  BuildDepends: mlsolver
+  MainIs: pdlsudoku.ml
+Executable "philosophersts-bin"
+  Path: src/generators
+  BuildDepends: mlsolver
+  MainIs: philosophersts.ml

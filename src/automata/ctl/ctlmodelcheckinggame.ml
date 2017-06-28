@@ -7,7 +7,7 @@ open Tcslist;;
 open Tcsarray;;
 open Tcstiming;;
 open Tcsmessage;;
-open Modelcheckinggames;;
+open Modelcheckinggamesregistry;;
 open Tcsctlstarformula;;
 			  
 type state = Tracking of block * int
@@ -193,7 +193,8 @@ let modelchecking_proc formula in_chan options (info_chan, formula_chan, constr_
    (game_cached', show_stats, (fun sol -> if sol init = Some true then ModelSatisfiesFormula else ModelFalsifiesFormula));;
    
 
-Modelcheckinggames.register_modelchecking_procedure
-	modelchecking_proc
-	"ctl"
-	"Modelchecking Procedure For CTL";;
+let register _ =
+    register_modelchecking_procedure
+        modelchecking_proc
+        "ctl"
+        "Modelchecking Procedure For CTL";;

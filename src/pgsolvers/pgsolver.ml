@@ -1,6 +1,4 @@
-open Generatedsat;;
 open Solvers ;;
-open Solverlist;;
 
 open Paritygame;;
 open Tcsbasedata;;
@@ -16,11 +14,6 @@ let use_pgsolver options game =
 	(Array.map (fun pl -> if pl = plr_Even then 0 else 1) sol, strat);;
 
 
-
-Pgsolvers.register_solver use_pgsolver
-                          "pgsolver"
-						  "pgs"
-						  ("<algorithm>\n     use pgsolver with" ^ fold_solvers (fun _ id _ _ s -> s ^ " " ^ id) "");;
 
 
 let use_partial_pgsolver options ((init, delta, omega, player, format), _) =
@@ -38,7 +31,13 @@ let use_partial_pgsolver options ((init, delta, omega, player, format), _) =
 	let strat' i = snd (res i) in
 	(sol', strat');;
 
-Pgsolvers.register_partial_solver use_partial_pgsolver
+
+let register _ =
+    Pgsolversregistry.register_solver use_pgsolver
+                          "pgsolver"
+						  "pgs"
+						  ("<algorithm>\n     use pgsolver with" ^ fold_solvers (fun _ id _ _ s -> s ^ " " ^ id) "");
+    Pgsolversregistry.register_partial_solver use_partial_pgsolver
                                   "partialpgsolver"
 								  "ppgs"
 								  ("<algorithm>\n     use partial pgsolver with" ^ fold_partial_solvers (fun _ id _ _ s -> s ^ " " ^ id) "");;

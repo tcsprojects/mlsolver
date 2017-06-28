@@ -7,7 +7,7 @@ open Tcsarray;;
 open Tcstiming;;
 open Tcsmessage;;
 open Tcspdlformula;;
-open Modelcheckinggames;;
+open Modelcheckinggamesregistry;;
 
 type state =
     Atom of int
@@ -165,7 +165,8 @@ let modelchecking_proc formula in_chan options (info_chan, formula_chan, constr_
    (game_cached', show_stats, (fun sol -> if sol init = Some true then ModelSatisfiesFormula else ModelFalsifiesFormula));;
    
 
-Modelcheckinggames.register_modelchecking_procedure
+let register _ =
+    register_modelchecking_procedure
 	modelchecking_proc
 	"pdl"
 	"Modelchecking Procedure For PDL";;

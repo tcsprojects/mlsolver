@@ -1,7 +1,9 @@
 open Arg ;;
 open Tcsformulaparse ;;
 open Validitygames;;
+open Validitygamesregistry;;
 open Modelcheckinggames;;
+open Modelcheckinggamesregistry;;
 open Tcsautomataparser;;
 open Tcsautomata;;
 open Tcsgames;;
@@ -103,7 +105,7 @@ let total_transform game =
 	
 	
 let header =
-		"Modal Logic Solver 1.3\n" ^
+		"Modal Logic Solver 1.4\n" ^
 		"Authors: Oliver Friedmann (University of Munich) and Martin Lange (University of Kassel), 2008-2017\n\n"
 
 let _ =
@@ -251,9 +253,9 @@ let _ =
 			|	Some (sol, _) -> (
 					let res = answer sol in
 					match res with
-						ModelSatisfiesFormula -> 
+						ModelSatisfiesFormula ->
 							info_msg (fun _ -> "Transition system is a model of the formula!\n")
-					|	ModelFalsifiesFormula -> 
+					|	ModelFalsifiesFormula ->
 							info_msg (fun _ -> "Transition system is no model of the formula!\n")
 						)
 			);

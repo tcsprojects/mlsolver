@@ -1,34 +1,21 @@
-open Tcsset;;
-open Tcsmetaformula;;
-open Tcsmessage;;
-open Tcsgames;;
+type validity_answer = Validitygamesregistry.validity_answer
 
-type validity_answer =
-	FormulaValid
-|	FormulaFalsifiable
-|	FormulaFalsifiableBy of ((string -> unit) -> unit)
+type validity_procedure = Validitygamesregistry.validity_procedure
 
-type validity_procedure = 
-	formula_expr ->
-	string array -> (* options; ann for annotations; comp for compact games *)
-	(MessageChannel.message_channel * (* general information *)
-	 MessageChannel.message_channel * (* formula information *)
-	 MessageChannel.message_channel) -> (* construction information *)
-	(int initpg * (* the game *)
-	 (unit -> unit) * (* final stats output function *)
-	 (int initpg_solution -> int initpg_strategy -> validity_answer)) (* answer function *)
+let register_validity_procedure = Validitygamesregistry.register_validity_procedure;;
 
-let proceduremap = ref TreeMap.empty_def;;
+let mem_validity_procedure = Validitygamesregistry.mem_validity_procedure;;
 
-let register_validity_procedure procedure identifier description =
-	if TreeMap.mem identifier !proceduremap
-	then failwith ("Procedure `" ^ identifier ^ "' already registered!\n")
-	else proceduremap := TreeMap.add identifier (procedure, description) !proceduremap;;
+let find_validity_procedure = Validitygamesregistry.find_validity_procedure;;
 
-let mem_validity_procedure identifier = TreeMap.mem identifier !proceduremap;;
+let enum_validity_procedures = Validitygamesregistry.enum_validity_procedures;;
 
-let find_validity_procedure identifier = TreeMap.find identifier !proceduremap;;
+let fold_validity_procedures = Validitygamesregistry.fold_validity_procedures;;
 
-let enum_validity_procedures it = TreeMap.iter (fun i (f, d) -> it f i d) !proceduremap;;
-
-let fold_validity_procedures fo b = TreeMap.fold (fun i (f, d) x -> fo f i d x) !proceduremap b;;	
+let _ =
+    Ctlvaliditygame.register ();
+    Ctlstarvaliditygame.register ();
+    Lmmcvaliditygame.register ();
+    Ltmcvaliditygame.register ();
+    Mmcvaliditygame.register ();
+    Pdlvaliditygame.register ();;

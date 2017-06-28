@@ -1,3 +1,0 @@
-[submodule "pgsolver"]
-	path = pgsolver
-	url = https://github.com/oliverfriedmann/pgsolver.git

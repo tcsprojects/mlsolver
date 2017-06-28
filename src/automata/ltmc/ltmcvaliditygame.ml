@@ -11,7 +11,7 @@ open Tcsbasedata;;
 open Tcsmessage;;
 open Tcsltmcformula;;
 open Ltmcthreadnba;;
-open Validitygames;;
+open Validitygamesregistry;;
 
 type 'a state =
     TT
@@ -312,5 +312,7 @@ let validity_proc formula options (info_chan, formula_chan, constr_chan) =
 	in
 	
    (game_cached', show_stats, (fun sol _ -> if sol init = Some true then FormulaValid else FormulaFalsifiable));;
-	
-Validitygames.register_validity_procedure validity_proc "ltmc" "Decision Procedure For Linear-Time Mu Calculus"
+
+
+let register _ =
+    register_validity_procedure validity_proc "ltmc" "Decision Procedure For Linear-Time Mu Calculus"
