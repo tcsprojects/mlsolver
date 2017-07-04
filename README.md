@@ -33,5 +33,5 @@ ocaml setup.ml -build
 You can verify that everything is working by calling:
 
 ```bash
-bin/ltmcparitybuechigenerator 3 | bin/mlsolver -stenv -val ltmc "#phi" -pgs recursive
+bin/ltmcparitybuechi 3 | bin/mlsolver -stenv -val ltmc "#phi" -pgs recursive
 ```
