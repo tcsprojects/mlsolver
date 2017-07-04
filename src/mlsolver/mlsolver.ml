@@ -36,10 +36,10 @@ type input_kind = NoInput | InputFromFile of string | InputFromStdIn
 let environment_file = ref NoInput
 
 let validity_list = 
-	String.concat ", " (fold_validity_procedures (fun _ ident _ l -> ident::l) [])
+	String.concat ", " (Validitygames.fold_validity_procedures (fun _ ident _ l -> ident::l) [])
 
 let modelchecking_list = 
-	String.concat ", " (fold_modelchecking_procedures (fun _ ident _  l -> ident::l) [])
+	String.concat ", " (Modelcheckinggames.fold_modelchecking_procedures (fun _ ident _  l -> ident::l) [])
 	
 let verbosity = ref 1
 
