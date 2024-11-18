@@ -18,13 +18,13 @@ Then:
 ```bash	
 opam update
 opam upgrade
-opam switch 4.03.0
+opam switch 4.14.2
 eval `opam config env`
 opam install ocamlbuild ocamlfind ounit TCSLib extlib ocaml-sat-solvers minisat pgsolver
 git clone https://github.com/tcsprojects/mlsolver.git
 cd mlsolver
 ocaml setup.ml -configure
-ocaml setup.ml -build
+ocaml setup.ml -build -use-ocamlfind -tag thread -cflags -w,-31 -lflags -w,-31
 ```
 
 
