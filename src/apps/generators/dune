@@ -1,0 +1,7 @@
+(executables
+ (names ctlstarsudoku elevatorts ltmcparitybuechi mucalcsudoku pdlsudoku philosophersts)
+ (modules ctlstarsudoku elevatorts ltmcparitybuechi mucalcsudoku pdlsudoku philosophersts)
+ (libraries mlsolver)
+ (flags (:standard -w -32))
+)
+(include_subdirs unqualified)

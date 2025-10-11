@@ -1,0 +1,7 @@
+(executables
+ (names guarded_trafo_worst_case)
+ (modules guarded_trafo_worst_case)
+ (libraries mlsolver)
+ (flags (:standard -w -27))
+)
+(include_subdirs unqualified)

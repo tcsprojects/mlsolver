@@ -1,3 +1,11 @@
+## v1.5
+
+- Change from OASIS to DUNE
+- Change from OCAML 4 to OCAML 5
+
+
+## v1.4
+
 Feb 24 2012		Oliver Friedmann
  - Added CTL+ procedure
  - Various minor improvements

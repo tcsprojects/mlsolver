@@ -1,0 +1,8 @@
+(library
+ (name mlsolver)
+ (public_name mlsolver)
+ (libraries num str unix threads extlib tcs-lib ocaml-sat-solvers pgsolver)
+ (wrapped false)
+ (flags (:standard -w -27 -w -33 -w -34 -w -39))
+)
+(include_subdirs unqualified)

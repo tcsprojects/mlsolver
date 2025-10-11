@@ -3,29 +3,48 @@ MLSolver
 
 A tool for solving the satisfiability and validity problems for modal fixpoint logics.
 
-Version 1.4, Copyright (c) 2008-2017
+Version 1.5, Copyright (c) 2008-2025, BSD 3 LICENSE
 
 It is developed and maintained by:
 - (c) Oliver Friedmann, University of Munich (http://oliverfriedmann.de)
 - (c) Martin Lange, University of Kassel (http://carrick.fmv.informatik.uni-kassel.de/~mlange/)
 
 
-## Installation
+## OPAM
 
-Install the OCaml Package Manager [OPAM](https://opam.ocaml.org).
+You can install this package via OPAM under the name `mlsolver`.
 
-Then:
-```bash	
-opam update
-opam upgrade
-opam switch 4.14.2
-eval `opam config env`
-opam install ocamlbuild ocamlfind ounit TCSLib extlib ocaml-sat-solvers minisat pgsolver
-git clone https://github.com/tcsprojects/mlsolver.git
-cd mlsolver
-ocaml setup.ml -configure
-ocaml setup.ml -build -use-ocamlfind -tag thread -cflags -w,-31 -lflags -w,-31
+
+## Commands
+
+
+### Build
+
 ```
+dune build
+```
+
+### Release
+
+1. Change version in `dune-project`.
+2. Update `CHANGES.md`.
+3. Run `dune build`.
+4. Commit
+```
+  git status
+  git add -A
+  git commit -m "message"
+  git tag v1.x [--force]
+  git push origin master --tags [--force]
+```
+5. Release
+```
+  dune-release tag
+  dune-release distrib
+  dune-release publish
+  dune-release opam pkg
+  dune-release opam submit
+```  
 
 
 ## Test

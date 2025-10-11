@@ -1,0 +1,7 @@
+(executables
+ (names mlsolver)
+ (modules mlsolver)
+ (libraries mlsolver)
+ (flags (:standard -w -33))
+)
+(include_subdirs unqualified)

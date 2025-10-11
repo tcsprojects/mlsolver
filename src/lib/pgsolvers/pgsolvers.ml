@@ -25,4 +25,4 @@ let fold_partial_solvers = Pgsolversregistry.fold_partial_solvers
 
 let _ =
     Pgsolver.register ();
-    Externalsolver.register ();;
+    Externalpgsolver.register ();;

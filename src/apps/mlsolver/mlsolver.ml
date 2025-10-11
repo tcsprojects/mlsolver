@@ -13,7 +13,20 @@ open Tcsargs;;
 open Tcsmessage;;
 open Tcsmetaformula;;
 open Pgsolvers;;
-open Logics;;
+
+open Ctlmodelcheckinggame;;
+open Ctlvaliditygame;;
+open Ctlstarmodelcheckinggame;;
+open Ctlstarvaliditygame;;
+open Lmmcmodelcheckinggame;;
+open Lmmcvaliditygame;;
+open Ltmcmodelcheckinggame;;
+open Ltmcvaliditygame;;
+open Mmcmodelcheckinggame;;
+open Mmcvaliditygame;;
+open Pdlmodelcheckinggame;;
+open Pdlvaliditygame;;
+
 open Pgsolver;;
 
 type mlsolvermode = NoMode |
